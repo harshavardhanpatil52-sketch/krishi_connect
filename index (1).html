@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KrishiConnect - Direct Market Access for Farmers</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">🌾 KrishiConnect</div>
+    <ul class="nav-links">
+      <li><a href="#recommend">Crop Advisor</a></li>
+      <li><a href="#market">Marketplace</a></li>
+      <li><a href="#how">How It Works</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Grow Smarter. Sell Better.</h1>
+    <p>Get crop recommendations based on your soil and weather.<br>Sell your produce directly to buyers — no middlemen.</p>
+    <div class="hero-btns">
+      <a href="#recommend" class="btn-green">Get Crop Advice</a>
+      <a href="#market" class="btn-outline">Sell Produce</a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat"><strong>12,400+</strong><span>Farmers Registered</span></div>
+    <div class="stat"><strong>₹2.8 Cr+</strong><span>Trade This Season</span></div>
+    <div class="stat"><strong>18%</strong><span>Avg Income Increase</span></div>
+    <div class="stat"><strong>340+</strong><span>Districts Covered</span></div>
+  </div>
+
+  <!-- CROP RECOMMENDATION -->
+  <section id="recommend">
+    <h2>🌿 Crop Recommendation Tool</h2>
+    <p class="sub">Fill in your farm details and get the best crop suggestions for this season.</p>
+
+    <div class="form-box">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>State</label>
+          <select id="r-state">
+            <option value="">Select State</option>
+            <option>Maharashtra</option>
+            <option>Punjab</option>
+            <option>Uttar Pradesh</option>
+            <option>Gujarat</option>
+            <option>Karnataka</option>
+            <option>Madhya Pradesh</option>
+            <option>Rajasthan</option>
+            <option>Tamil Nadu</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Soil Type</label>
+          <select id="r-soil">
+            <option value="">Select Soil Type</option>
+            <option>Black Cotton</option>
+            <option>Alluvial</option>
+            <option>Red and Laterite</option>
+            <option>Sandy / Loamy</option>
+            <option>Clay Loam</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Season</label>
+          <select id="r-season">
+            <option value="">Select Season</option>
+            <option>Kharif (Jun-Oct)</option>
+            <option>Rabi (Nov-Mar)</option>
+            <option>Zaid (Apr-Jun)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Water Availability</label>
+          <select id="r-water">
+            <option value="">Select</option>
+            <option>Irrigated</option>
+            <option>Semi-Irrigated</option>
+            <option>Rain-fed Only</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Land Size (Acres)</label>
+          <input type="number" id="r-land" placeholder="e.g. 3.5" min="0.1" />
+        </div>
+        <div class="form-group">
+          <label>Budget Level</label>
+          <select id="r-budget">
+            <option value="">Select</option>
+            <option>Low (less than Rs 10k/acre)</option>
+            <option>Medium (Rs 10k-25k/acre)</option>
+            <option>High (more than Rs 25k/acre)</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn-green" onclick="getRecommendation()">Get Recommendations</button>
+
+      <div id="reco-results" class="results-area" style="display:none;">
+        <h3>Recommended Crops For Your Farm</h3>
+        <div id="results-grid" class="results-grid"></div>
+        <div id="result-tips" class="tips-box"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARKETPLACE -->
+  <section id="market" class="grey-bg">
+    <h2>🏪 Sell Your Produce</h2>
+    <p class="sub">List your crop directly. Buyers will contact you — no commission, no middlemen.</p>
+
+    <div class="market-layout">
+      <div class="form-box">
+        <h3>Create a Listing</h3>
+        <div class="form-group">
+          <label>Crop / Produce</label>
+          <select id="m-crop" onchange="updatePriceHint()">
+            <option value="">Select Crop</option>
+            <option data-price="2200">Wheat</option>
+            <option data-price="1900">Maize</option>
+            <option data-price="4200">Soybean</option>
+            <option data-price="1800">Onion</option>
+            <option data-price="1200">Potato</option>
+            <option data-price="6500">Red Chilli</option>
+            <option data-price="5800">Cotton</option>
+            <option data-price="2183">Rice (Paddy)</option>
+            <option data-price="5100">Chickpea</option>
+            <option data-price="8200">Turmeric</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Quantity (Quintals)</label>
+            <input type="number" id="m-qty" placeholder="e.g. 20" min="1" />
+          </div>
+          <div class="form-group">
+            <label>Quality Grade</label>
+            <select id="m-grade">
+              <option value="">Select Grade</option>
+              <option>Grade A (Premium)</option>
+              <option>Grade B (Standard)</option>
+              <option>Grade C (Basic)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="price-hint" class="price-hint" style="display:none;"></div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Price (Rs/Quintal)</label>
+            <input type="number" id="m-price" placeholder="e.g. 2400" />
+          </div>
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" id="m-loc" placeholder="Village / District" />
+          </div>
+        </div>
+
+        <button class="btn-green" onclick="submitListing()">Post Listing</button>
+      </div>
+
+      <div class="listings-panel">
+        <h3>Live Listings</h3>
+        <div id="listings-container"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <h2>How It Works</h2>
+    <p class="sub">Four simple steps from soil to sale.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h4>Register Your Farm</h4>
+        <p>Create a free profile with your location, land size, soil type and irrigation details.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h4>Get Crop Advice</h4>
+        <p>Our tool recommends the best crops based on your soil, season and water availability.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h4>Grow Your Crop</h4>
+        <p>Receive alerts for pest warnings, weather changes and government scheme updates.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h4>Sell at Best Price</h4>
+        <p>List your produce, get buyer inquiries and receive direct payment — no commission.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>🌾 KrishiConnect — Empowering Indian Farmers</p>
+    <p>Theme: Agriculture, FoodTech and Rural Development</p>
+  </footer>
+
+  <div id="notif" class="notif"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
